@@ -1,0 +1,17 @@
+[project]
+name = "shopeasy-rest-api"
+version = "0.1.0"
+description = "Mock-REST-API für Marketplace-Retourenanmeldungen im DvG-Projekt"
+readme = "README.md"
+requires-python = ">=3.15.2,<3.16"
+dynamic = ["dependencies"]
+
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+include = ["app*"]

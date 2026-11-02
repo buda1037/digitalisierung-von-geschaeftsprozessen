@@ -1,0 +1,165 @@
+
+GET /health -> 200
+{
+  "status": "ok"
+}
+
+POST /api/v1/returns -> 201
+Location: http://127.0.0.1:8000/api/v1/returns/379e2fb3-0c70-464d-8726-90e290048e18
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "379e2fb3-0c70-464d-8726-90e290048e18",
+  "received_at": "2026-11-01T16:52:14.604577Z"
+}
+
+GET /api/v1/returns/379e2fb3-0c70-464d-8726-90e290048e18 -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "379e2fb3-0c70-464d-8726-90e290048e18",
+  "received_at": "2026-11-01T16:52:14.604577Z"
+}
+
+POST /api/v1/returns -> 201
+Location: http://127.0.0.1:8000/api/v1/returns/1f115c7f-6db1-4b07-8269-099b15989728
+{
+  "marketplace": "zalando",
+  "order_id": "ZAL-2026-20002",
+  "customer_reference": "ZAL-CUSTOMER-17",
+  "item": {
+    "sku": "SE-SNEAKER-WHITE-39",
+    "name": "Sneaker Weiß, Größe 39"
+  },
+  "return_reason": "Die Farbe entspricht nicht der Beschreibung.",
+  "registered_at": "2026-10-29T14:15:00Z",
+  "id": "1f115c7f-6db1-4b07-8269-099b15989728",
+  "received_at": "2026-11-01T16:52:14.611757Z"
+}
+
+GET /api/v1/returns/1f115c7f-6db1-4b07-8269-099b15989728 -> 200
+{
+  "marketplace": "zalando",
+  "order_id": "ZAL-2026-20002",
+  "customer_reference": "ZAL-CUSTOMER-17",
+  "item": {
+    "sku": "SE-SNEAKER-WHITE-39",
+    "name": "Sneaker Weiß, Größe 39"
+  },
+  "return_reason": "Die Farbe entspricht nicht der Beschreibung.",
+  "registered_at": "2026-10-29T14:15:00Z",
+  "id": "1f115c7f-6db1-4b07-8269-099b15989728",
+  "received_at": "2026-11-01T16:52:14.611757Z"
+}
+
+GET /api/v1/returns?marketplace=amazon&limit=5&offset=0 -> 200
+{
+  "items": [
+    {
+      "marketplace": "amazon",
+      "order_id": "AMZ-2026-10001",
+      "customer_reference": "AMZ-CUSTOMER-42",
+      "item": {
+        "sku": "SE-TSHIRT-BLUE-M",
+        "name": "T-Shirt Blau, Größe M"
+      },
+      "return_reason": "Der Artikel ist zu klein.",
+      "registered_at": "2026-10-28T09:30:00Z",
+      "id": "379e2fb3-0c70-464d-8726-90e290048e18",
+      "received_at": "2026-11-01T16:52:14.604577Z"
+    }
+  ],
+  "total": 1,
+  "limit": 5,
+  "offset": 0
+}
+
+POST /api/v1/returns -> 422
+{
+  "detail": [
+    {
+      "type": "enum",
+      "loc": [
+        "body",
+        "marketplace"
+      ],
+      "msg": "Input should be 'amazon' or 'zalando'",
+      "input": "unbekannter-marktplatz",
+      "ctx": {
+        "expected": "'amazon' or 'zalando'"
+      }
+    },
+    {
+      "type": "string_too_short",
+      "loc": [
+        "body",
+        "order_id"
+      ],
+      "msg": "String should have at least 1 character",
+      "input": "   ",
+      "ctx": {
+        "min_length": 1
+      }
+    },
+    {
+      "type": "model_attributes_type",
+      "loc": [
+        "body",
+        "item"
+      ],
+      "msg": "Input should be a valid dictionary or object to extract fields from",
+      "input": [
+        {
+          "sku": "SE-001",
+          "name": "Artikel 1"
+        },
+        {
+          "sku": "SE-002",
+          "name": "Artikel 2"
+        }
+      ]
+    },
+    {
+      "type": "string_too_short",
+      "loc": [
+        "body",
+        "return_reason"
+      ],
+      "msg": "String should have at least 1 character",
+      "input": "",
+      "ctx": {
+        "min_length": 1
+      }
+    },
+    {
+      "type": "timezone_aware",
+      "loc": [
+        "body",
+        "registered_at"
+      ],
+      "msg": "Input should have timezone info",
+      "input": "2026-10-29T14:15:00"
+    }
+  ]
+}
+
+GET /api/v1/returns/00000000-0000-0000-0000-000000000000 -> 404
+{
+  "detail": "Retourenanmeldung nicht gefunden"
+}
+
+Demonstration abgeschlossen. Zwei neue Anmeldungen wurden gespeichert.

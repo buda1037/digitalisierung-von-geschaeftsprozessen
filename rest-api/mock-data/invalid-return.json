@@ -1,0 +1,11 @@
+{
+  "marketplace": "unbekannter-marktplatz",
+  "order_id": "   ",
+  "customer_reference": "DEMO-CUSTOMER",
+  "item": [
+    {"sku": "SE-001", "name": "Artikel 1"},
+    {"sku": "SE-002", "name": "Artikel 2"}
+  ],
+  "return_reason": "",
+  "registered_at": "2026-10-29T14:15:00"
+}

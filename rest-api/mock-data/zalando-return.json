@@ -1,0 +1,11 @@
+{
+  "marketplace": "zalando",
+  "order_id": "ZAL-2026-20002",
+  "customer_reference": "ZAL-CUSTOMER-17",
+  "item": {
+    "sku": "SE-SNEAKER-WHITE-39",
+    "name": "Sneaker Weiß, Größe 39"
+  },
+  "return_reason": "Die Farbe entspricht nicht der Beschreibung.",
+  "registered_at": "2026-10-29T14:15:00Z"
+}
