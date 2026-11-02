@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package wareneingang;
+
+// Zustand der Ware bei Wareneingangspruefung
+enum Zustand {
+  ZUSTAND_UNBEKANNT = 0; // nicht gesetzt / "kein Filter" bei Listen-Anfragen
+  NEUWERTIG = 1;
+  BESCHAEDIGT = 2;
+  GETRAGEN = 3;
+}
+
+message Wareneingang {
+  string wareneingang_id = 1;
+  string retouren_id = 2;
+  Zustand zustand = 3;
+  string notiz = 4;
+  string erfasst_am = 5; // ISO-8601 Zeitstempel (UTC)
+}
+
+message ErfasseWareneingangRequest {
+  string retouren_id = 1;
+  Zustand zustand = 2;
+  string notiz = 3;
+}
+
+message GetWareneingangRequest {
+  string retouren_id = 1;
+}
+
+message ListeWareneingaengeRequest {
+  Zustand zustand_filter = 1; // ZUSTAND_UNBEKANNT = keine Filterung
+}
+
+message KorrigiereZustandRequest {
+  string wareneingang_id = 1;
+  Zustand neuer_zustand = 2;
+}
+
+service WareneingangsService {
+  // Erfasst Wareneingang + Zustandspruefung fuer eine Retoure (Prozessschritt 5)
+  rpc ErfasseWareneingang(ErfasseWareneingangRequest) returns (Wareneingang);
+
+  // Liefert die Erfassung zu einer Retoure
+  rpc GetWareneingang(GetWareneingangRequest) returns (Wareneingang);
+
+  // Streamt alle (ggf. gefilterten) Erfassungen
+  rpc ListeWareneingaenge(ListeWareneingaengeRequest) returns (stream Wareneingang);
+
+  // Korrigiert den Zustand einer bereits erfassten Wareneingangspruefung
+  rpc KorrigiereZustand(KorrigiereZustandRequest) returns (Wareneingang);
+}

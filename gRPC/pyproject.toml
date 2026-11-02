@@ -1,0 +1,50 @@
+[project]
+name = "wareneingang-service"
+version = "0.1.0"
+description = "gRPC-Service fuer Wareneingangs- und Zustandserfassung"
+authors = [
+    { name = "Aaron Stief", email = "aaron.stief@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "grpcio>=1.85.0",
+    "grpcio-tools>=1.85.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.16",
+    "pyrefly>=1.4",
+    "types-grpcio>=1.0",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+line-length = 100
+exclude = ["generated"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pyrefly]
+project-includes = ["*.py", "tests/**/*.py"]
+project-excludes = ["generated/**", ".venv/**"]
+search-path = ["generated"]
+replace-untyped-imports-with-any = ["wareneingang_pb2_grpc"]
+
+# grpc_tools generates servicer base-class methods that always `raise NotImplementedError`,
+# which pyrefly infers as returning `Never`. Any real implementation we write is then flagged
+# as an incompatible override, even though this is exactly how grpc servicers are meant to work.
+[tool.pyrefly.errors]
+bad-override = false
+
+# Your editor's "ty" language server needs the same hint as pyrefly to find the
+# generated gRPC modules (they're added to sys.path at runtime, not installed as a package).
+[tool.ty.environment]
+extra-paths = ["generated"]
+
+[tool.ty.src]
+exclude = ["generated"]
