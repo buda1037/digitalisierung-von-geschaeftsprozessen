@@ -1,0 +1,23 @@
+[
+  {
+    "order_id": "AMZ-2026-10001",
+    "marketplace": "amazon",
+    "customer_reference": "AMZ-CUSTOMER-42",
+    "ordered_at": "2026-10-20T08:30:00Z",
+    "currency": "EUR",
+    "items": [
+      {"sku": "SE-TSHIRT-BLUE-M", "name": "T-Shirt Blau, Größe M", "quantity": 1, "unit_price": "24.90"},
+      {"sku": "SE-SOCKS-BLACK", "name": "Socken Schwarz", "quantity": 2, "unit_price": "7.50"}
+    ]
+  },
+  {
+    "order_id": "ZAL-2026-20002",
+    "marketplace": "zalando",
+    "customer_reference": "ZAL-CUSTOMER-17",
+    "ordered_at": "2026-10-21T12:00:00Z",
+    "currency": "EUR",
+    "items": [
+      {"sku": "SE-SNEAKER-WHITE-39", "name": "Sneaker Weiß, Größe 39", "quantity": 1, "unit_price": "89.90"}
+    ]
+  }
+]

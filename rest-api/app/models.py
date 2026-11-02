@@ -1,6 +1,7 @@
 """Gemeinsames, marketplaceunabhängiges Datenformat der REST-Komponente."""
 
 from datetime import UTC, datetime
+from decimal import Decimal
 from enum import StrEnum
 from typing import Annotated
 from uuid import UUID
@@ -11,6 +12,15 @@ from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validato
 class Marketplace(StrEnum):
     AMAZON = "amazon"
     ZALANDO = "zalando"
+
+
+class ReturnStatus(StrEnum):
+    NEW = "NEW"
+    RECEIVED = "RECEIVED"
+    IN_REVIEW = "IN_REVIEW"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+    REFUNDED = "REFUNDED"
 
 
 class ApiModel(BaseModel):
@@ -64,8 +74,28 @@ class ReturnCreate(ApiModel):
 
 
 class ReturnRead(ReturnCreate):
-    id: UUID = Field(description="Von ShopEasy erzeugte, systemübergreifend nutzbare Retouren-ID")
-    received_at: AwareDatetime = Field(description="Eingangszeitpunkt bei ShopEasy in UTC")
+    id: UUID = Field(description="Vom Mock erzeugte, systemübergreifend nutzbare Retouren-ID")
+    received_at: AwareDatetime = Field(description="Erfassungszeitpunkt im Mock in UTC")
+    status: ReturnStatus
+    updated_at: AwareDatetime = Field(description="Zeitpunkt der letzten Statusänderung in UTC")
+
+
+class ReturnStatusUpdate(ApiModel):
+    status: ReturnStatus
+
+
+class OrderItem(Item):
+    quantity: Annotated[int, Field(strict=True, ge=1)]
+    unit_price: Annotated[Decimal, Field(ge=0, max_digits=12, decimal_places=2)]
+
+
+class OrderRead(ApiModel):
+    order_id: Reference
+    marketplace: Marketplace
+    customer_reference: Reference
+    ordered_at: AwareDatetime
+    currency: Annotated[str, Field(pattern=r"^[A-Z]{3}$")]
+    items: Annotated[list[OrderItem], Field(min_length=1)]
 
 
 class ReturnPage(ApiModel):

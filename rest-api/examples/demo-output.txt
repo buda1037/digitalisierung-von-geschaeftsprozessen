@@ -4,8 +4,31 @@ GET /health -> 200
   "status": "ok"
 }
 
+GET /api/v1/orders/AMZ-2026-10001 -> 200
+{
+  "order_id": "AMZ-2026-10001",
+  "marketplace": "amazon",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "ordered_at": "2026-10-20T08:30:00Z",
+  "currency": "EUR",
+  "items": [
+    {
+      "sku": "SE-TSHIRT-BLUE-M",
+      "name": "T-Shirt Blau, Größe M",
+      "quantity": 1,
+      "unit_price": "24.90"
+    },
+    {
+      "sku": "SE-SOCKS-BLACK",
+      "name": "Socken Schwarz",
+      "quantity": 2,
+      "unit_price": "7.50"
+    }
+  ]
+}
+
 POST /api/v1/returns -> 201
-Location: http://127.0.0.1:8000/api/v1/returns/379e2fb3-0c70-464d-8726-90e290048e18
+Location: http://127.0.0.1:54116/api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0
 {
   "marketplace": "amazon",
   "order_id": "AMZ-2026-10001",
@@ -16,11 +39,13 @@ Location: http://127.0.0.1:8000/api/v1/returns/379e2fb3-0c70-464d-8726-90e290048
   },
   "return_reason": "Der Artikel ist zu klein.",
   "registered_at": "2026-10-28T09:30:00Z",
-  "id": "379e2fb3-0c70-464d-8726-90e290048e18",
-  "received_at": "2026-11-01T16:52:14.604577Z"
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "NEW",
+  "updated_at": "2026-11-02T21:12:52.827673Z"
 }
 
-GET /api/v1/returns/379e2fb3-0c70-464d-8726-90e290048e18 -> 200
+GET /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0 -> 200
 {
   "marketplace": "amazon",
   "order_id": "AMZ-2026-10001",
@@ -31,12 +56,31 @@ GET /api/v1/returns/379e2fb3-0c70-464d-8726-90e290048e18 -> 200
   },
   "return_reason": "Der Artikel ist zu klein.",
   "registered_at": "2026-10-28T09:30:00Z",
-  "id": "379e2fb3-0c70-464d-8726-90e290048e18",
-  "received_at": "2026-11-01T16:52:14.604577Z"
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "NEW",
+  "updated_at": "2026-11-02T21:12:52.827673Z"
+}
+
+GET /api/v1/orders/ZAL-2026-20002 -> 200
+{
+  "order_id": "ZAL-2026-20002",
+  "marketplace": "zalando",
+  "customer_reference": "ZAL-CUSTOMER-17",
+  "ordered_at": "2026-10-21T12:00:00Z",
+  "currency": "EUR",
+  "items": [
+    {
+      "sku": "SE-SNEAKER-WHITE-39",
+      "name": "Sneaker Weiß, Größe 39",
+      "quantity": 1,
+      "unit_price": "89.90"
+    }
+  ]
 }
 
 POST /api/v1/returns -> 201
-Location: http://127.0.0.1:8000/api/v1/returns/1f115c7f-6db1-4b07-8269-099b15989728
+Location: http://127.0.0.1:54116/api/v1/returns/c9baf0fe-f779-419e-bc0d-062baf46410c
 {
   "marketplace": "zalando",
   "order_id": "ZAL-2026-20002",
@@ -47,11 +91,13 @@ Location: http://127.0.0.1:8000/api/v1/returns/1f115c7f-6db1-4b07-8269-099b15989
   },
   "return_reason": "Die Farbe entspricht nicht der Beschreibung.",
   "registered_at": "2026-10-29T14:15:00Z",
-  "id": "1f115c7f-6db1-4b07-8269-099b15989728",
-  "received_at": "2026-11-01T16:52:14.611757Z"
+  "id": "c9baf0fe-f779-419e-bc0d-062baf46410c",
+  "received_at": "2026-11-02T21:12:52.835911Z",
+  "status": "NEW",
+  "updated_at": "2026-11-02T21:12:52.835911Z"
 }
 
-GET /api/v1/returns/1f115c7f-6db1-4b07-8269-099b15989728 -> 200
+GET /api/v1/returns/c9baf0fe-f779-419e-bc0d-062baf46410c -> 200
 {
   "marketplace": "zalando",
   "order_id": "ZAL-2026-20002",
@@ -62,8 +108,10 @@ GET /api/v1/returns/1f115c7f-6db1-4b07-8269-099b15989728 -> 200
   },
   "return_reason": "Die Farbe entspricht nicht der Beschreibung.",
   "registered_at": "2026-10-29T14:15:00Z",
-  "id": "1f115c7f-6db1-4b07-8269-099b15989728",
-  "received_at": "2026-11-01T16:52:14.611757Z"
+  "id": "c9baf0fe-f779-419e-bc0d-062baf46410c",
+  "received_at": "2026-11-02T21:12:52.835911Z",
+  "status": "NEW",
+  "updated_at": "2026-11-02T21:12:52.835911Z"
 }
 
 GET /api/v1/returns?marketplace=amazon&limit=5&offset=0 -> 200
@@ -79,13 +127,232 @@ GET /api/v1/returns?marketplace=amazon&limit=5&offset=0 -> 200
       },
       "return_reason": "Der Artikel ist zu klein.",
       "registered_at": "2026-10-28T09:30:00Z",
-      "id": "379e2fb3-0c70-464d-8726-90e290048e18",
-      "received_at": "2026-11-01T16:52:14.604577Z"
+      "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+      "received_at": "2026-11-02T21:12:52.827673Z",
+      "status": "NEW",
+      "updated_at": "2026-11-02T21:12:52.827673Z"
     }
   ],
   "total": 1,
   "limit": 5,
   "offset": 0
+}
+
+PATCH /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0/status -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "RECEIVED",
+  "updated_at": "2026-11-02T21:12:52.844924Z"
+}
+
+GET /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0 -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "RECEIVED",
+  "updated_at": "2026-11-02T21:12:52.844924Z"
+}
+
+PATCH /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0/status -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "IN_REVIEW",
+  "updated_at": "2026-11-02T21:12:52.850905Z"
+}
+
+GET /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0 -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "IN_REVIEW",
+  "updated_at": "2026-11-02T21:12:52.850905Z"
+}
+
+PATCH /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0/status -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "APPROVED",
+  "updated_at": "2026-11-02T21:12:52.856686Z"
+}
+
+GET /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0 -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "APPROVED",
+  "updated_at": "2026-11-02T21:12:52.856686Z"
+}
+
+PATCH /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0/status -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "REFUNDED",
+  "updated_at": "2026-11-02T21:12:52.862406Z"
+}
+
+GET /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0 -> 200
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T09:30:00Z",
+  "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+  "received_at": "2026-11-02T21:12:52.827673Z",
+  "status": "REFUNDED",
+  "updated_at": "2026-11-02T21:12:52.862406Z"
+}
+
+GET /api/v1/returns?marketplace=amazon&order_id=AMZ-2026-10001&status=REFUNDED&limit=100 -> 200
+{
+  "items": [
+    {
+      "marketplace": "amazon",
+      "order_id": "AMZ-2026-10001",
+      "customer_reference": "AMZ-CUSTOMER-42",
+      "item": {
+        "sku": "SE-TSHIRT-BLUE-M",
+        "name": "T-Shirt Blau, Größe M"
+      },
+      "return_reason": "Der Artikel ist zu klein.",
+      "registered_at": "2026-10-28T09:30:00Z",
+      "id": "ac9a93a9-2e6c-4797-8c36-586c398a51b0",
+      "received_at": "2026-11-02T21:12:52.827673Z",
+      "status": "REFUNDED",
+      "updated_at": "2026-11-02T21:12:52.862406Z"
+    }
+  ],
+  "total": 1,
+  "limit": 100,
+  "offset": 0
+}
+
+PATCH /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0/status -> 409
+{
+  "detail": "Statuswechsel von REFUNDED nach NEW ist nicht zulässig"
+}
+
+PATCH /api/v1/returns/ac9a93a9-2e6c-4797-8c36-586c398a51b0/status -> 422
+{
+  "detail": [
+    {
+      "type": "enum",
+      "loc": [
+        "body",
+        "status"
+      ],
+      "msg": "Input should be 'NEW', 'RECEIVED', 'IN_REVIEW', 'APPROVED', 'REJECTED' or 'REFUNDED'",
+      "input": "UNKNOWN",
+      "ctx": {
+        "expected": "'NEW', 'RECEIVED', 'IN_REVIEW', 'APPROVED', 'REJECTED' or 'REFUNDED'"
+      }
+    }
+  ]
+}
+
+PATCH /api/v1/returns/c9baf0fe-f779-419e-bc0d-062baf46410c/status -> 200
+{
+  "marketplace": "zalando",
+  "order_id": "ZAL-2026-20002",
+  "customer_reference": "ZAL-CUSTOMER-17",
+  "item": {
+    "sku": "SE-SNEAKER-WHITE-39",
+    "name": "Sneaker Weiß, Größe 39"
+  },
+  "return_reason": "Die Farbe entspricht nicht der Beschreibung.",
+  "registered_at": "2026-10-29T14:15:00Z",
+  "id": "c9baf0fe-f779-419e-bc0d-062baf46410c",
+  "received_at": "2026-11-02T21:12:52.835911Z",
+  "status": "RECEIVED",
+  "updated_at": "2026-11-02T21:12:52.873829Z"
+}
+
+PATCH /api/v1/returns/c9baf0fe-f779-419e-bc0d-062baf46410c/status -> 200
+{
+  "marketplace": "zalando",
+  "order_id": "ZAL-2026-20002",
+  "customer_reference": "ZAL-CUSTOMER-17",
+  "item": {
+    "sku": "SE-SNEAKER-WHITE-39",
+    "name": "Sneaker Weiß, Größe 39"
+  },
+  "return_reason": "Die Farbe entspricht nicht der Beschreibung.",
+  "registered_at": "2026-10-29T14:15:00Z",
+  "id": "c9baf0fe-f779-419e-bc0d-062baf46410c",
+  "received_at": "2026-11-02T21:12:52.835911Z",
+  "status": "REJECTED",
+  "updated_at": "2026-11-02T21:12:52.877799Z"
 }
 
 POST /api/v1/returns -> 422
@@ -162,4 +429,14 @@ GET /api/v1/returns/00000000-0000-0000-0000-000000000000 -> 404
   "detail": "Retourenanmeldung nicht gefunden"
 }
 
-Demonstration abgeschlossen. Zwei neue Anmeldungen wurden gespeichert.
+GET /api/v1/orders/UNKNOWN-ORDER -> 404
+{
+  "detail": "Bestellung nicht gefunden"
+}
+
+PATCH /api/v1/returns/00000000-0000-0000-0000-000000000000/status -> 404
+{
+  "detail": "Retourenanmeldung nicht gefunden"
+}
+
+Demonstration abgeschlossen. Zwei neue Retouren: REFUNDED und REJECTED.

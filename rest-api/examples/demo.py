@@ -1,4 +1,4 @@
-"""Marketplace-Aufrufe gegen die laufende API demonstrieren, ohne Zusatzpakete."""
+"""ShopEasy-Client: Mock-Daten vorbereiten, Retouren abrufen und Status ändern."""
 
 import argparse
 import json
@@ -49,19 +49,51 @@ def main() -> None:
     base_url = args.base_url.rstrip("/")
 
     call(base_url, "GET", "/health", expected=200)
+    created_returns = []
     for filename in ("amazon-return.json", "zalando-return.json"):
         payload = json.loads((MOCK_DATA / filename).read_text(encoding="utf-8"))
+        # Bestelldaten existieren unabhängig von der Retourenmeldung.
+        order = call(base_url, "GET", f"/api/v1/orders/{payload['order_id']}", expected=200)
+        require(order["order_id"] == payload["order_id"] and bool(order["items"]), "Bestelldaten")
         created = call(base_url, "POST", "/api/v1/returns", expected=201, payload=payload)
-        call(base_url, "GET", f"/api/v1/returns/{created['id']}", expected=200)
+        require(created["status"] == "NEW", "Initialstatus NEW")
+        fetched = call(base_url, "GET", f"/api/v1/returns/{created['id']}", expected=200)
+        require(fetched == created, "Einzelabruf")
+        created_returns.append(created)
     query = urlencode({"marketplace": "amazon", "limit": 5, "offset": 0})
-    call(base_url, "GET", f"/api/v1/returns?{query}", expected=200)
+    page = call(base_url, "GET", f"/api/v1/returns?{query}", expected=200)
+    require(all(item["marketplace"] == "amazon" for item in page["items"]), "Marktplatzfilter")
+
+    amazon, zalando = created_returns
+    status_path = f"/api/v1/returns/{amazon['id']}/status"
+    for status in ("RECEIVED", "IN_REVIEW", "APPROVED", "REFUNDED"):
+        updated = call(base_url, "PATCH", status_path, expected=200, payload={"status": status})
+        fetched = call(base_url, "GET", f"/api/v1/returns/{amazon['id']}", expected=200)
+        require(updated["status"] == status and fetched == updated, "Gespeicherter Status " + status)
+    query = urlencode({"marketplace": "amazon", "order_id": amazon["order_id"], "status": "REFUNDED", "limit": 100})
+    page = call(base_url, "GET", f"/api/v1/returns?{query}", expected=200)
+    require(amazon["id"] in {item["id"] for item in page["items"]}, "Kombinierter Statusfilter")
+    call(base_url, "PATCH", status_path, expected=409, payload={"status": "NEW"})
+    call(base_url, "PATCH", status_path, expected=422, payload={"status": "UNKNOWN"})
+    for status in ("RECEIVED", "REJECTED"):
+        call(base_url, "PATCH", f"/api/v1/returns/{zalando['id']}/status", expected=200, payload={"status": status})
     invalid = json.loads((MOCK_DATA / "invalid-return.json").read_text(encoding="utf-8"))
     call(base_url, "POST", "/api/v1/returns", expected=422, payload=invalid)
     call(
         base_url, "GET", "/api/v1/returns/00000000-0000-0000-0000-000000000000",
         expected=404,
     )
-    print("\nDemonstration abgeschlossen. Zwei neue Anmeldungen wurden gespeichert.")
+    call(base_url, "GET", "/api/v1/orders/UNKNOWN-ORDER", expected=404)
+    call(
+        base_url, "PATCH", "/api/v1/returns/00000000-0000-0000-0000-000000000000/status",
+        expected=404, payload={"status": "RECEIVED"},
+    )
+    print("\nDemonstration abgeschlossen. Zwei neue Retouren: REFUNDED und REJECTED.")
+
+
+def require(condition: bool, description: str) -> None:
+    if not condition:
+        raise SystemExit("Inhaltliche Prüfung fehlgeschlagen: " + description)
 
 
 if __name__ == "__main__":

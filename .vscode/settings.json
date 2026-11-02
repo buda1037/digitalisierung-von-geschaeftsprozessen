@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}/rest-api/.venv",
+  "python.analysis.extraPaths": ["${workspaceFolder}/rest-api"],
+  "python.testing.unittestEnabled": true,
+  "python.testing.cwd": "${workspaceFolder}/rest-api",
+  "python.testing.unittestArgs": ["-v", "-s", "tests", "-p", "test_*.py"]
+}
