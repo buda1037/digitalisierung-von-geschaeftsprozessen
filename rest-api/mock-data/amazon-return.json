@@ -1,0 +1,11 @@
+{
+  "marketplace": "amazon",
+  "order_id": "AMZ-2026-10001",
+  "customer_reference": "AMZ-CUSTOMER-42",
+  "item": {
+    "sku": "SE-TSHIRT-BLUE-M",
+    "name": "T-Shirt Blau, Größe M"
+  },
+  "return_reason": "Der Artikel ist zu klein.",
+  "registered_at": "2026-10-28T10:30:00+01:00"
+}
