@@ -1,0 +1,12 @@
+services:
+  rabbitmq:
+    image: rabbitmq:4.4-management
+    hostname: rabbitmq # fester Knotenname, damit das Volume nach Neustarts wiederverwendet wird
+    ports:
+      - "127.0.0.1:5672:5672" # AMQP
+      - "127.0.0.1:15672:15672" # Management-UI, Login guest/guest
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq-data:
